@@ -2,9 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import Task from './models/Task.js'; // importe antes das rotas
+import Task from './models/Task.js';
 
 dotenv.config();
+console.log("MONGO_URI:", process.env.MONGO_URI); //TESTE DO ENV
 
 const app = express();
 
@@ -24,7 +25,7 @@ app.get("/", (req, res) => {
 
 //Rotas de tarefas
 app.post("/tasks", async (req, res) => {
-    console.log("req.body:", req.body); // deve mostrar seu JSON corretamente
+    console.log("req.body:", req.body); // deve mostrar seu JSON corretamente - teste do post
     try {
         const task = new Task(req.body);
         await task.save();
