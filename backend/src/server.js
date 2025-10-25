@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import Task from './models/Task.js';
+import taskRoutes from './routes/TaskRoutes.js';
 
 dotenv.config();
 console.log("MONGO_URI:", process.env.MONGO_URI); //TESTE DO ENV
@@ -19,30 +19,7 @@ mongoose.connect(process.env.MONGO_URI)
     .catch((err) => console.error("Erro ao conectar MongoDB: ", err));
 
 //Rota teste
-app.get("/", (req, res) => {
-    res.send("API rodando");
-});
-
-//Rotas de tarefas
-app.post("/tasks", async (req, res) => {
-    console.log("req.body:", req.body); // deve mostrar seu JSON corretamente - teste do post
-    try {
-        const task = new Task(req.body);
-        await task.save();
-        res.status(201).json(task);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-app.get("/tasks", async (req, res) => {
-    try {
-        const tasks = await Task.find();
-        res.status(200).json(tasks);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+app.use("/tasks", taskRoutes)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
