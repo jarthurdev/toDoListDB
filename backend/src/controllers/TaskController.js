@@ -12,8 +12,8 @@ export const createTask = async (req, res) => {
 
 export const getTask = async (req, res) => {
     try{
-        const tasks = await Task.find();
-        res.status(201).json(tasks)
+        const tasks = await Task.find().sort({ customId: 1 });
+        res.status(200).json(tasks)
     } catch (error) {
         res.status(500).json({ error: "Error ao buscar tarefa"})
     }
